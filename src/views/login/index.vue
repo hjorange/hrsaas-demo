@@ -48,7 +48,7 @@
 
       <div class="tips">
         <span>还没有账号立即注册？</span>
-        <span> 账号：1380000000(1-9)</span>
+        <span> 账号：1380000000(2-4)</span>
         <span> 密码: 123456</span>
       </div>
 
@@ -57,8 +57,8 @@
 </template>
 
 <script>
-// 引入登录接口
-import { login } from '@/api/user.js'
+// 拿到在vuex里面发起的登录请求
+import { mapActions } from 'vuex'
 // 引入封装的手机号正则
 import { validMobile } from '@/utils/validate'
 
@@ -73,7 +73,7 @@ export default {
     return {
       // 表单数据
       loginForm: {
-        mobile: '13800000008',
+        mobile: '13800000002',
         password: '123456'
       },
       // 表单规则
@@ -99,6 +99,8 @@ export default {
     }
   },
   methods: {
+    // 调用vuex/user里的方法
+    ...mapActions(['user/Login']),
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -113,11 +115,8 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(async valid => {
         if (!valid) return
-        try {
-          await login(this.loginForm)
-        } catch (error) {
-          console.log(1)
-        }
+        // 调用登录方法传参
+        this['user/Login'](this.loginForm)
       })
     }
   }
