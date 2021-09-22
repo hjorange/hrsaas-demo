@@ -116,7 +116,16 @@ export default {
       this.$refs.loginForm.validate(async valid => {
         if (!valid) return
         // 调用登录方法传参
-        this['user/Login'](this.loginForm)
+        try {
+          // 发送请求之前开启loding
+          this.loading = true
+          await this['user/Login'](this.loginForm)
+          // 登录成功跳转页面
+          this.$router.push('/')
+        } finally {
+          // 不管成功或失败关闭loding
+          this.loading = false
+        }
       })
     }
   }
