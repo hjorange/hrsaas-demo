@@ -1,5 +1,10 @@
 import request from '@/utils/request'
 
+/**
+ * 登录请求
+ * @param {*} data
+ * @returns
+ */
 export function login(data) {
   return request({
     url: '/sys/login',
@@ -8,8 +13,15 @@ export function login(data) {
   })
 }
 
-export function getInfo(token) {
-
+/**
+ *
+ * @returns 获取用户信息
+ */
+export function getInfo() {
+  return request({
+    url: '/sys/profile',
+    method: 'POST'
+  })
 }
 
 export function logout() {

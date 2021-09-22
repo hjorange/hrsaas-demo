@@ -1,6 +1,9 @@
 import axios from 'axios'
 // 引入提示消息
 import { Message } from 'element-ui'
+// 引入store
+import store from '@/store'
+
 // 创建axios实例
 const service = axios.create(
   // 利用.env.development和.env.production里面的VUE_APP_BASE_API来进行不同环境不同地址
@@ -11,9 +14,12 @@ const service = axios.create(
 )
 
 // 请求拦截器
-service.interceptors.request.use(
-
-)
+service.interceptors.request.use((config) => {
+  if (store.getters.token) {
+    config.headers.Authorization = 'Bearer ' + store.getters.token
+  }
+  return config
+})
 
 // 响应拦截器
 service.interceptors.response.use(({ data }) => {

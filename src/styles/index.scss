@@ -47,7 +47,9 @@ a:hover {
 div:focus {
   outline: none;
 }
-
+#nprogress .bar{
+background-color: red !important;
+}
 .clearfix {
   &:after {
     visibility: hidden;
