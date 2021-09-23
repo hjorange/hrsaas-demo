@@ -14,8 +14,9 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img src="@/assets/common/bigUserHeader.png" class="user-avatar">
-          <span>萌小呆</span>
+          <!-- 定义自定义事件 v-imgError-->
+          <img v-imgError="defauitImg" :src="avatar" class="user-avatar">
+          <span>{{ username }}</span>
           <i class="el-icon-arrow-down" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -36,24 +37,36 @@
 <script>
 import { mapGetters } from 'vuex'
 import Hamburger from '@/components/Hamburger'
+// 引入图片路径
+import defauitImg from '@/assets/common/bigUserHeader.png'
 
 export default {
   components: {
     Hamburger
   },
+  data() {
+    return {
+      // 定义图片变量，因为直接写路径，打包会出错
+      defauitImg
+    }
+  },
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'avatar',
+      'username'
     ])
   },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
-    async logout() {
-      await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    // 退出登录
+    logout() {
+      // 调用user/logout方法清除token和数据
+      this.$store.commit('user/logout')
+      // 跳转到登录页面
+      this.$router.push('/login')
     }
   }
 }

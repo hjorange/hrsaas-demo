@@ -24,6 +24,17 @@ export function getInfo() {
   })
 }
 
+/**
+ * 根据上面接口获取用户信息的Id来获取详细信息
+ * @param {*} id
+ * @returns
+ */
+export function getInfoById(id) {
+  return request({
+    url: '/sys/user/' + id,
+    method: 'GET'
+  })
+}
 export function logout() {
 
 }

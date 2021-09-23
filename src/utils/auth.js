@@ -2,6 +2,7 @@
 import Cookies from 'js-cookie'
 
 const TokenKey = 'hrsaas-token'
+const TokenTimeKey = 'token-time'
 
 export function getToken() {
   return Cookies.get(TokenKey)
@@ -14,3 +15,13 @@ export function setToken(token) {
 export function removeToken() {
   return Cookies.remove(TokenKey)
 }
+
+// 封装时间的方法
+export function setTokenTime() {
+  Cookies.set(TokenTimeKey, Date.now())
+}
+
+export function getTokenTime() {
+  return Cookies.get(TokenTimeKey)
+}
+
