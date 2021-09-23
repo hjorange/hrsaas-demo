@@ -1,20 +1,20 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// 引入多个模块的规则
-import approvalsRouter from './modules/approvals'
-import departmentsRouter from './modules/departments'
-import employeesRouter from './modules/employees'
-import permissionRouter from './modules/permission'
-import attendancesRouter from './modules/attendances'
-import salarysRouter from './modules/salarys'
-import settingRouter from './modules/setting'
-import socialRouter from './modules/social'
 
 Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
 
+// 引入多个模块的规则
+import approvalsRouter from './modules/approvals.js'
+import departmentsRouter from './modules/departments.js'
+import employeesRouter from './modules/employees.js'
+import permissionRouter from './modules/permission.js'
+import attendancesRouter from './modules/attendances.js'
+import salarysRouter from './modules/salarys.js'
+import settingRouter from './modules/setting.js'
+import socialRouter from './modules/social.js'
 /**
  * constantRoutes
  * a base page that does not have permission requirements
