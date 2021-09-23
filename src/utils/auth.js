@@ -16,11 +16,11 @@ export function removeToken() {
   return Cookies.remove(TokenKey)
 }
 
-// 封装时间的方法
+// 封装时间的方法保存到本地
 export function setTokenTime() {
   Cookies.set(TokenTimeKey, Date.now())
 }
-
+// 封装时间的方法从本地获取
 export function getTokenTime() {
   return Cookies.get(TokenTimeKey)
 }
