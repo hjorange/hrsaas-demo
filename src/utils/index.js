@@ -115,3 +115,22 @@ export function param2Obj(url) {
   })
   return obj
 }
+
+// 封装方法，把数据处理成树形结构的
+export function listTree(val, list) {
+  // 准备空数组，接收返回数据
+  const arr = []
+  // 循环数据
+  list.forEach(item => {
+    // 判断，匹配数据，找到一级数据，每次判断条件不一样，所以需要传入参数
+    if (item.pid === val) {
+      // 调用循环把item.id传入，找到一级数据的二级数据
+      const childArr = listTree(item.id, list)
+      // 如果二级就在一级里面添加二级，如果不写判断，没有二级也会返回一个空数组
+      if (childArr.length) { item.children = childArr }
+      // 把数据都添加到我们定义的数组里面
+      arr.push(item)
+    }
+  })
+  return arr
+}

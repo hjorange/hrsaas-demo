@@ -40,7 +40,9 @@ module.exports = {
     // 解决跨域问题，让本地服务器拦截带有'/api'，触发代理机制，的然后发送到服务器请求数据
     proxy: {
       '/api': {
-        target: 'http://liufusong.top:3000'
+        // target: 'http://liufusong.top:3000'
+        target: 'http://ihrm-java.itheima.net'
+
       }
     }
     // before: require('./mock/mock-server.js')
