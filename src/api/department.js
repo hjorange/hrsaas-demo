@@ -22,3 +22,28 @@ export function delDeptById(id) {
     method: 'DELETE'
   })
 }
+
+/**
+ * 新增部门
+ * @returns
+ */
+export function getIncreased(data) {
+  return request({
+    url: '/company/department',
+    method: 'POST',
+    data
+  })
+}
+
+/**
+ * 根据ID修改部门详情
+ * @param {*} data
+ * @returns
+ */
+export function updateDepartment(data) {
+  return request({
+    url: '/company/department/' + data.id,
+    method: 'PUT',
+    data
+  })
+}
