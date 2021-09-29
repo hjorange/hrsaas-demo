@@ -156,11 +156,12 @@ export default {
       this.form = res
       this.editRoleDialog = true
     },
-    // 根据id更新角色
+    // 点击确定
     async onSave() {
       try {
         await this.$refs.form.validate()
         if (this.form.id) {
+          // 根据id更新角色
           await getByIdUpdate(this.form)
         } else {
           // 新增
