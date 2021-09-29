@@ -6,6 +6,7 @@ export const formatHireType = (val) => {
   return constant.hireType.find(item => item.id === val).value
 }
 
+// 定义时间过滤器
 export const formTime = (val, str = '-') => {
   const timeObj = new Date(val)
   const y = timeObj.getFullYear()
