@@ -56,3 +56,15 @@ export const addRoles = (data) => {
     data
   })
 }
+
+/**
+ * 查询全部企业列表
+ * @param {*} params
+ * @returns
+ */
+export const companyAll = () => {
+  return request({
+    url: '/company',
+    method: 'GET'
+  })
+}

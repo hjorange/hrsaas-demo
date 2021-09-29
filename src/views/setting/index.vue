@@ -50,7 +50,25 @@
               @current-change="handleCurrentChange"
             />
           </el-tab-pane>
-          <el-tab-pane label="公司信息" name="info">公司信息</el-tab-pane>
+          <el-tab-pane label="公司信息" name="info">
+            <el-form label-width="250px" :model="formLabelAlign" disabled="true" class="from">
+              <el-form-item label="企业名称">
+                <el-input v-model="formLabelAlign.name" />
+              </el-form-item>
+              <el-form-item label="公司地址">
+                <el-input v-model="formLabelAlign.companyAddress" />
+              </el-form-item>
+              <el-form-item label="公司电话">
+                <el-input v-model="formLabelAlign.companyPhone" />
+              </el-form-item>
+              <el-form-item label="邮箱">
+                <el-input v-model="formLabelAlign.mailbox" />
+              </el-form-item>
+              <el-form-item label="备注">
+                <el-input v-model="formLabelAlign.remarks" />
+              </el-form-item>
+            </el-form>
+          </el-tab-pane>
         </el-tabs>
       </el-card>
 
@@ -61,7 +79,7 @@
       width="30%"
       @close="onclose"
     >
-      <el-form ref="form" :model="form" :rules="fromRules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="fromRules" label-width="80px" class="from">
         <el-form-item label="角色名称" prop="name">
           <el-input v-model="form.name" />
         </el-form-item>
@@ -78,7 +96,7 @@
 </template>
 
 <script>
-import { getRolesList, DELETERoles, getRolesById, getByIdUpdate, addRoles } from '@/api/company.js'
+import { getRolesList, DELETERoles, getRolesById, getByIdUpdate, addRoles, companyAll } from '@/api/company.js'
 export default {
   name: 'Settings',
   data() {
@@ -94,10 +112,12 @@ export default {
       total: 20,
       // 控制修改弹层是否显示
       editRoleDialog: false,
+
       form: {
         name: '',
         description: ''
       },
+      // 正则校验规则
       fromRules: {
         name: [
           { required: true, message: '请输入角色名称', trigger: 'blur' },
@@ -107,6 +127,13 @@ export default {
           { required: true, message: '请输入角色描述', trigger: 'blur' },
           { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
         ]
+      },
+      formLabelAlign: {
+        name: '',
+        companyAddress: '',
+        companyPhone: '',
+        mailbox: '',
+        remarks: ''
       }
     }
   },
@@ -119,6 +146,7 @@ export default {
 
   created() {
     this.loadRolesList()
+    this.loadcompanyAll()
   },
 
   methods: {
@@ -181,6 +209,11 @@ export default {
         name: '',
         description: ''
       }
+    },
+    async loadcompanyAll() {
+      const res = await companyAll()
+      console.log(res)
+      this.formLabelAlign = res[0]
     }
 
   }
@@ -199,6 +232,14 @@ export default {
     display: flex;
     justify-content: flex-end;
   }
+
+}
+.from{
+  margin-top: 30px;
+}
+::v-deep.el-input.is-disabled .el-input__inner{
+  width: 500px;
+  font-size: 16px;
 }
 
 </style>
