@@ -15,6 +15,8 @@ import attendancesRouter from './modules/attendances.js'
 import salarysRouter from './modules/salarys.js'
 import settingRouter from './modules/setting.js'
 import socialRouter from './modules/social.js'
+import employeesImport from './modules/import.js'
+
 /**
  * constantRoutes
  * a base page that does not have permission requirements
@@ -58,7 +60,8 @@ const varRouter = [
   attendancesRouter,
   salarysRouter,
   settingRouter,
-  socialRouter
+  socialRouter,
+  employeesImport
 ]
 const createRouter = () => new Router({
   // mode: 'history', // require service support

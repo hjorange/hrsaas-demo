@@ -3,12 +3,13 @@
     <div class="app-container">
       <PageTools :show-before="false">
         <template v-slot:after>
-          <el-button size="mini" type="primary">导入</el-button>
+          <el-button size="mini" type="primary" @click="$router.push('/employees/import')">导入</el-button>
           <el-button size="mini" type="primary">导出</el-button>
           <el-button
             size="mini"
             type="primary"
             icon="el-icon-plus"
+            @click="showDialog=true"
           >新增员工</el-button>
         </template>
       </PageTools>
@@ -23,7 +24,11 @@
               {{ row.formOfEmployment | formatHireType }}
             </template>
           </el-table-column>
-          <el-table-column label="部门" sortable="" prop="departmentName" />
+          <el-table-column label="部门" sortable="">
+            <template v-slot="{row}">
+              {{ row.departmentName?row.departmentName:'暂无数据' }}
+            </template>
+          </el-table-column>
           <el-table-column label="入职时间" sortable="">
             <template v-slot="{row}">
               {{ row.timeOfEntry | formTime }}
@@ -35,13 +40,13 @@
             </template>
           </el-table-column>
           <el-table-column label="操作" sortable="" fixed="right" width="280">
-            <template>
+            <template v-slot="{row}">
               <el-button type="text" size="small">查看</el-button>
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
               <el-button type="text" size="small">角色</el-button>
-              <el-button type="text" size="small">删除</el-button>
+              <el-button type="text" size="small" @click="onClickDel(row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -50,17 +55,25 @@
           <el-pagination
             layout="total,prev, pager, next"
             :total="total"
+            :page-size="tablePage.size"
+            @current-change="handleCurrentChange"
           />
         </el-row>
       </el-card>
     </div>
+    <AddEmployees :show-dialog.sync="showDialog" @AddEmployees="loadEmployeesList" />
+    <!-- <AddEmployees v-model="showDialog" /> -->
   </div>
 </template>
 
 <script>
-import { getEmployeesList } from '@/api/employees.js'
+import { getEmployeesList, delEmployee } from '@/api/employees.js'
+import AddEmployees from './components/AddEmployees.vue'
 export default {
   name: 'Employees',
+  components: {
+    AddEmployees
+  },
   data() {
     return {
       employees: [],
@@ -68,7 +81,9 @@ export default {
         page: 1,
         size: 10
       },
-      total: null
+      total: null,
+      // 新增弹窗
+      showDialog: false
     }
   },
 
@@ -77,11 +92,30 @@ export default {
   },
 
   methods: {
+    // 获取员工信息
     async loadEmployeesList() {
       const res = await getEmployeesList(this.tablePage)
       console.log(res)
       this.employees = res.rows
       this.total = res.total
+    },
+    // 点击页码变化
+    handleCurrentChange(val) {
+      this.tablePage.page = val
+      this.loadEmployeesList()
+    },
+    // 点击删除,通过插槽拿到当前点击数据，传值
+    onClickDel(row) {
+      this.$confirm('此操作将永久删除该员工, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async() => {
+        await delEmployee(row.id)
+        this.$message.success('删除成功!')
+        this.loadEmployeesList()
+      }).catch(() => {
+      })
     }
 
   }

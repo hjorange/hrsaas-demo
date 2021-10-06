@@ -23,3 +23,38 @@ export function getEmployeesList(params) {
   })
 }
 
+/**
+ * 新增员工
+ * @param {*} params
+ * @returns
+ */
+export function addEmployees(data) {
+  return request({
+    url: '/sys/user',
+    method: 'POST',
+    data
+  })
+}
+
+/**
+ * 删除员工接口
+ * ****/
+
+export function delEmployee(id) {
+  return request({
+    url: `/sys/user/${id}`,
+    method: 'delete'
+  })
+}
+
+/**
+ * 批量导入员工
+ * ****/
+
+export function AddEmployeeAll(data) {
+  return request({
+    url: '/sys/user/batch',
+    method: 'POST',
+    data
+  })
+}
