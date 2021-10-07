@@ -4,7 +4,7 @@
       <PageTools :show-before="false">
         <template v-slot:after>
           <el-button size="mini" type="primary" @click="$router.push('/employees/import')">导入</el-button>
-          <el-button size="mini" type="primary">导出</el-button>
+          <el-button size="mini" type="primary" @click="onExeclExport">导出</el-button>
           <el-button
             size="mini"
             type="primary"
@@ -67,8 +67,10 @@
 </template>
 
 <script>
+import { formatDate } from '@/utils'
 import { getEmployeesList, delEmployee } from '@/api/employees.js'
 import AddEmployees from './components/AddEmployees.vue'
+import { formatHireType } from '@/filters'
 export default {
   name: 'Employees',
   components: {
@@ -116,8 +118,47 @@ export default {
         this.loadEmployeesList()
       }).catch(() => {
       })
+    },
+    // 点击导出
+    onExeclExport() {
+      import('@/vendor/Export2Excel').then(async excel => {
+        // 建立一个对象，形成映射关系，不需要判断，循环员工列表，我们需要的数据格式是[[],[]],所以定义数组，再循环我们的表头，拿到里面的每一项，将数据一一对应的放在数组里面
+        const mapKey = {
+          '姓名': 'username',
+          '手机号': 'mobile',
+          '入职日期': 'timeOfEntry',
+          '转正日期': 'correctionTime',
+          '工号': 'workNumber',
+          '聘用形式': 'formOfEmployment',
+          '部门': 'departmentName'
+        }
+        // 表头,把mapKey的key形成一个数组，就不需要自己定义
+        const tHeader = Object.keys(mapKey)
+        // 请求员工列表
+        const res = await getEmployeesList({ page: 1, size: this.total })
+        const arr = this.formetExeclDate(res.rows, tHeader, mapKey)
+        excel.export_json_to_excel({
+          header: tHeader, // 表头 必填
+          data: arr, // 具体数据 必填
+          filename: '员工列表', // 非必填
+          autoWidth: true, // 非必填
+          bookType: 'xlsx' // 非必填
+        })
+      })
+    },
+    formetExeclDate(data, tHeader, mapKey) {
+      // 处理数据
+      return data.map(item => {
+        return tHeader.map(headerItem => {
+          if ((item[mapKey[headerItem]] - 0) > 0 && (headerItem === '入职日期' || headerItem === '转正日期')) {
+            return formatDate(item[mapKey[headerItem]], '/')
+          } else if (headerItem === '聘用形式') {
+            return formatHireType(item[mapKey[headerItem]])
+          }
+          return item[mapKey[headerItem]]
+        })
+      })
     }
-
   }
 }
 </script>

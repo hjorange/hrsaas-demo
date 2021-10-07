@@ -3,7 +3,7 @@ import constant from '@/api/constant/employees.js'
 // 格式化员工里的聘用状态
 
 export const formatHireType = (val) => {
-  return val ? constant.hireType.find(item => item.id === val).value : '暂无数据'
+  return val ? constant.hireType.find(item => item.id === (val - 0)).value : '暂无数据'
 }
 
 // 定义时间过滤器

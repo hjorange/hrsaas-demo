@@ -6,6 +6,7 @@
 
 <script>
 import { AddEmployeeAll } from '@/api/employees.js'
+import { formatDate } from '@/utils'
 export default {
   data() {
     return {
@@ -28,17 +29,13 @@ export default {
         '转正日期': 'correctionTime',
         '工号': 'workNumber'
       }
-
+      // map循环数组，处理数据格式，长度与之前的数组长度一致，return什么就会返回什么
       const execlArr = results.map(item => {
         Object.keys(item).forEach(key => {
           // 判断是否是需要转换日期的，必须return，结束这次循环
-          if (key === '入职日期') {
-            obj[userRelations[key]] = this.formatDate(item[key], '/')
-            return false
-          }
-          if (key === '转正日期') {
-            obj[userRelations[key]] = this.formatDate(item[key], '/')
-            return false
+          if (key === '入职日期' || key === '转正日期') {
+            obj[userRelations[key]] = formatDate(item[key], '/')
+            return
           }
           // 循环数组将key替换成我们需要的名字
           // 相当于obj['timeOfEntry']=item['入职日期']
@@ -54,19 +51,13 @@ export default {
       //     correctionTime: item['转正日期']
       //   }
       })
+      console.log(execlArr)
+      // 导入请求,处理后的数据传入
       await AddEmployeeAll(execlArr)
-    },
-    // 将数字转换日期方法
-    formatDate(numb, format) {
-      const time = new Date((numb - 1) * 24 * 3600000 + 1)
-      time.setYear(time.getFullYear() - 70)
-      const year = time.getFullYear() + ''
-      const month = time.getMonth() + 1 + ''
-      const date = time.getDate() + ''
-      if (format && format.length === 1) {
-        return year + format + month + format + date
-      }
-      return year + (month < 10 ? '0' + month : month) + (date < 10 ? '0' + date : date)
+
+      this.$message.success('导入成功')
+      // 跳转上一页
+      this.$router.back()
     }
   }
 }
