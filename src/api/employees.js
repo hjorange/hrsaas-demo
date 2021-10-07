@@ -58,3 +58,73 @@ export function AddEmployeeAll(data) {
     data
   })
 }
+
+/** *
+ *  获取某个用户的基本信息
+ *
+ * ***/
+export function getEmployeeInfo(id) {
+  return request({
+    url: '/sys/user/' + id
+  })
+}
+
+/** *
+ *
+ * 更新员工账号密码
+ * **/
+export function updateUserDetail(data) {
+  return request({
+    url: `/sys/user/${data.id}`,
+    method: 'put',
+    data
+  })
+}
+
+/**
+ * 获取员工个人信息
+ * @param {*} id
+ * @returns
+ */
+export function getEmployeesDetail(id) {
+  return request({
+    url: '/employees/' + id + '/personalInfo'
+  })
+}
+
+/**
+ * 获取员工岗位信息
+ * @param {*} id
+ * @returns
+ */
+export function getEmployeesJobs(id) {
+  return request({
+    url: '/employees/' + id + '/jobs'
+  })
+}
+
+/**
+ * 更改员工个人信息
+ * @param {*} id
+ * @returns
+ */
+export function updateEmployeesDetail(id, data) {
+  return request({
+    url: '/employees/' + id + '/personalInfo',
+    method: 'put',
+    data
+  })
+}
+
+/**
+ * 更改员工岗位信息
+ * @param {*} id
+ * @returns
+ */
+export function updateEmployeesJobs(id, data) {
+  return request({
+    url: '/employees/' + id + '/jobs',
+    method: 'put',
+    data
+  })
+}

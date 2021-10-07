@@ -3,7 +3,7 @@
     <div class="app-container">
       <PageTools :show-before="false">
         <template v-slot:after>
-          <el-button size="mini" type="primary" @click="$router.push('/employees/import')">导入</el-button>
+          <el-button size="mini" type="primary" @click="$router.push('/import')">导入</el-button>
           <el-button size="mini" type="primary" @click="onExeclExport">导出</el-button>
           <el-button
             size="mini"
@@ -41,7 +41,7 @@
           </el-table-column>
           <el-table-column label="操作" sortable="" fixed="right" width="280">
             <template v-slot="{row}">
-              <el-button type="text" size="small">查看</el-button>
+              <el-button type="text" size="small" @click="$router.push('/employees/'+row.id)">查看</el-button>
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>

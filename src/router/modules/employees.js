@@ -12,6 +12,11 @@ export default {
         title: '员工', // 用来显示菜单标题
         icon: 'people' // 用来显示菜单图标
       }
+    },
+    {
+      path: ':id', // 默认子路由
+      component: () => import('@/views/employees/dateil'),
+      hidden: true
     }
   ]
 }
