@@ -289,7 +289,6 @@ import EmployeeEnum from '@/api/constant/employees'
 export default {
   data() {
     return {
-      Id: this.$route.params.id,
       EmployeeEnum, // 员工枚举数据
       userInfo: {},
       formData: {
@@ -357,11 +356,15 @@ export default {
       }
     }
   },
+  computed: {
+    Id() {
+      return this.$route.params.id
+    }
+  },
 
   created() {
     this.loadEmployeesDetail()
   },
-
   methods: {
     async loadEmployeesDetail() {
       // 获取用户个人信息
@@ -379,7 +382,8 @@ export default {
     },
     // 员工详细信息更改
     async saveUser() {
-      await updateInfo(this.Id, { ...this.userInfo })
+      await updateInfo(this.userInfo)
+      this.$message.success('更新成功')
     }
 
   }

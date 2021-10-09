@@ -16,11 +16,12 @@
           />
         </el-form-item> -->
         <el-form-item label="转正状态">
-          <el-select v-model="formData.stateOfCorrection" placeholder="请选择" disabled>
+          <el-select v-model="formData.positiveType" placeholder="请选择" disabled>
             <el-option
-              v-for="item in EmployeeEnum.stateOfCorrection"
-              :key="item.value"
-              :value="item.value"
+              v-for="item in EmployeeEnum.positiveType"
+              :key="item.id"
+              :label="item.value"
+              :value="item.id"
             />
           </el-select>
         </el-form-item>
@@ -159,12 +160,12 @@
 </template>
 
 <script>
-import { getEmployeesJobs, updateEmployeesJobs } from '@/api/employees.js'
+import { getEmployeesJobs, updateEmployeesJobs, getEmployeesSimpleList } from '@/api/employees.js'
 import EmployeeEnum from '@/api/constant/employees.js'
 export default {
   data() {
     return {
-      Id: this.$route.params.id,
+      jobId: this.$route.params.id,
       depts: [],
       EmployeeEnum,
       formData: {
@@ -200,17 +201,24 @@ export default {
 
   created() {
     this.loadEmployeesJobs()
+    this.loadEmployeesSimpleList()
   },
 
   methods: {
     // 获取员工岗位信息
     async loadEmployeesJobs() {
-      const res = await getEmployeesJobs(this.Id)
+      const res = await getEmployeesJobs(this.jobId)
       this.formData = res
     },
     // 更改员工岗位信息
     async saveJob() {
-      await updateEmployeesJobs(this.Id, { ...this.formData })
+      await updateEmployeesJobs(this.jobId, { ...this.formData })
+      this.$message.success('更新成功')
+    },
+    // 获取员工简单列表
+    async loadEmployeesSimpleList() {
+      const res = await getEmployeesSimpleList()
+      this.depts = res
     }
   }
 }

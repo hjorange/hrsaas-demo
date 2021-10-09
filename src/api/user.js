@@ -45,9 +45,9 @@ export function logout() {
  * @param {*} data
  * @returns
  */
-export function updateInfo(id, data) {
+export function updateInfo(data) {
   return request({
-    url: '/sys/user/' + id,
+    url: '/sys/user/' + data.id,
     method: 'put',
     data
   })

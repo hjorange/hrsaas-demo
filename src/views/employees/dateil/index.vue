@@ -17,10 +17,10 @@
               </el-form-item>
             </el-form>
           </el-tab-pane>
-          <el-tab-pane label="个人详情">
+          <el-tab-pane label="个人详情" :lazy="true">
             <UserInfo />
           </el-tab-pane>
-          <el-tab-pane label="岗位信息">
+          <el-tab-pane label="岗位信息" :lazy="true">
             <JobInfo />
           </el-tab-pane>
         </el-tabs>
