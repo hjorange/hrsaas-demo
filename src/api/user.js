@@ -38,3 +38,17 @@ export function getInfoById(id) {
 export function logout() {
 
 }
+
+/**
+ * 更改员工详细信息
+ * @param {*} id
+ * @param {*} data
+ * @returns
+ */
+export function updateInfo(data) {
+  return request({
+    url: '/sys/user/' + data.id,
+    method: 'put',
+    data
+  })
+}
