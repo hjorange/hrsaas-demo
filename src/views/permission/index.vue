@@ -73,6 +73,7 @@ export default {
   name: 'Permission',
   data() {
     return {
+      title: false,
       Permission: [],
       // 添加弹窗
       PermissionDialog: false,
