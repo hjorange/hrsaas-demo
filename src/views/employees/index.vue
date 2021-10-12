@@ -18,6 +18,17 @@
         <el-table border :data="employees">
           <el-table-column label="序号" sortable="" type="index" />
           <el-table-column label="姓名" sortable="" prop="username" />
+          <el-table-column label="头像">
+            <template v-slot="{row}">
+              <img
+                v-imgError="require('../../assets/common/bigUserHeader.png')"
+                class="Image"
+                :src="row.staffPhoto"
+                alt=""
+                @click="onClickCanvas(row.staffPhoto)"
+              >
+            </template>
+          </el-table-column>
           <el-table-column label="工号" sortable="" prop="workNumber" />
           <el-table-column label="聘用形式" sortable="">
             <template v-slot="{row}">
@@ -45,7 +56,7 @@
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small">角色</el-button>
+              <el-button type="text" size="small" @click="onClickRole(row.id)">角色</el-button>
               <el-button type="text" size="small" @click="onClickDel(row)">删除</el-button>
             </template>
           </el-table-column>
@@ -63,6 +74,19 @@
     </div>
     <AddEmployees :show-dialog.sync="showDialog" @AddEmployees="loadEmployeesList" />
     <!-- <AddEmployees v-model="showDialog" /> -->
+
+    <!-- 点击头像生产二维码弹层 -->
+    <el-dialog id="el-dialog__header" :visible.sync="qrcodeDialog">
+      <!-- 二维码画布 -->
+      <canvas id="canvas" />
+    </el-dialog>
+
+    <!-- 点击分配角色弹窗 -->
+    <AssignRole
+      :set-role-dialog.sync="setRoleDialog"
+      :employees-id="employeesId"
+      @closeRoleDialog="setRoleDialog=false"
+    />
   </div>
 </template>
 
@@ -71,28 +95,36 @@ import { formatDate } from '@/utils'
 import { getEmployeesList, delEmployee } from '@/api/employees.js'
 import AddEmployees from './components/AddEmployees.vue'
 import { formatHireType } from '@/filters'
+import QRCode from 'qrcode'
+import AssignRole from './components/assignRole.vue'
+
 export default {
   name: 'Employees',
   components: {
-    AddEmployees
+    AddEmployees,
+    AssignRole
   },
   data() {
     return {
-      employees: [],
+      employees: [], // 数据
       tablePage: {
         page: 1,
         size: 10
       },
       total: null,
-      // 新增弹窗
-      showDialog: false
+      showDialog: false, // 新增弹窗
+      qrcodeDialog: false, // 二维码画布弹层
+      setRoleDialog: false,
+      employeesId: ''// 员工Id
     }
   },
 
   created() {
     this.loadEmployeesList()
   },
+  mounted() {
 
+  },
   methods: {
     // 获取员工信息
     async loadEmployeesList() {
@@ -158,11 +190,43 @@ export default {
           return item[mapKey[headerItem]]
         })
       })
+    },
+    // 点击头像显示二维码画布弹层
+    onClickCanvas(Image) {
+      if (!Image) return this.$message.error('该用户暂未设置头像')
+      // 弹层显示，异步，视图还未改变
+      this.qrcodeDialog = true
+      // 上一步为异步，等视图改变，所以加this.$nextTick
+      this.$nextTick(() => {
+        // 拿到dom
+        const canvas = document.getElementById('canvas')
+
+        QRCode.toCanvas(canvas, Image, error => {
+          if (error) return this.$message.error('生成失败')
+        })
+      })
+    },
+    onClickRole(rowId) {
+      this.setRoleDialog = true
+      // 保存用户Id,子组件发请求参数
+      this.employeesId = rowId
     }
   }
 }
 </script>
 
 <style scoped lang='scss'>
-
+.Image{
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+::v-deep #el-dialog__header{
+  padding:40px 20px 10px !important;
+}
+::v-deep .el-dialog__body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 </style>

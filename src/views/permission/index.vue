@@ -1,9 +1,13 @@
 <template>
   <div class="dashboard-container">
     <div class="app-container">
-      <h2>
-        权限
-      </h2>
+      <PageTools :show-before="false">
+        <template v-slot:after>
+          <el-button type="primary" icon="el-icon-edit" size="small">
+            添加权限
+          </el-button>
+        </template>
+      </PageTools>
     </div>
   </div>
 </template>

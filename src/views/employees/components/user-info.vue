@@ -1,5 +1,12 @@
 <template>
   <div class="user-info">
+    <el-row type="flex" justify="end">
+      <el-tooltip content="打印个人基本信息">
+        <router-link :to="`/employees/print/${Id}?type=personal`">
+          <i class="el-icon-printer" />
+        </router-link>
+      </el-tooltip>
+    </el-row>
     <!-- 个人信息 -->
     <el-form label-width="220px">
       <!-- 工号 入职时间 -->
@@ -58,7 +65,7 @@
         <el-col :span="12">
           <el-form-item label="员工头像">
             <!-- 放置上传图片 -->
-
+            <UploadImage ref="UploadAll" @onSuccess="onSuccessImage" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -88,9 +95,7 @@
         <!-- 个人头像 -->
         <!-- 员工照片 -->
 
-        <el-form-item label="员工照片">
-          <!-- 放置上传图片 -->
-        </el-form-item>
+        <el-form-item label="员工照片" />
         <el-form-item label="国家/地区">
           <el-select v-model="formData.nationalArea" class="inputW2">
             <el-option
@@ -287,6 +292,7 @@ import { getInfoById, updateInfo } from '@/api/user.js'
 import { getEmployeesDetail, updateEmployeesDetail } from '@/api/employees.js'
 import EmployeeEnum from '@/api/constant/employees'
 export default {
+  name: 'UserInfo',
   data() {
     return {
       EmployeeEnum, // 员工枚举数据
@@ -374,16 +380,31 @@ export default {
       console.log(res)
       this.formData = res
       this.userInfo = userInfo
+      // 判断里面有没有员工头像，有的话传给子组件，赋值给url
+      if (userInfo.staffPhoto) {
+        this.$refs.UploadAll.filelist = [{ url: userInfo.staffPhoto }]
+      }
     },
     // 员工个人信息更改
     async savePersonal() {
       await updateEmployeesDetail(this.Id, { ...this.formData })
       this.$message.success('更新成功')
     },
+    // 子传值，修改员工头像
+    onSuccessImage(filelist, url) {
+      console.log(url)
+      this.userInfo.staffPhoto = url
+    },
+
     // 员工详细信息更改
     async saveUser() {
+      // 图片没有上传成功不让走下面的
+      if (this.$refs.UploadAll.percentage !== 100) {
+        return this.$message.error('图片还在上传中...')
+      }
       await updateInfo(this.userInfo)
       this.$message.success('更新成功')
+      console.log(this.userInfo)
     }
 
   }

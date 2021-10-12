@@ -10,6 +10,7 @@
       accept="image/png, image/jpeg,image/gif"  图片格式限制，选择时不符合条件的不显示
       -->
     <el-upload
+      v-show="!isShowProgress"
       action="#"
       list-type="picture-card"
       :file-list="filelist"
@@ -23,6 +24,8 @@
     >
       <i class="el-icon-plus" />
     </el-upload>
+    <!-- 进度条 -->
+    <el-progress v-if="isShowProgress" type="circle" :percentage="percentage" />
     <!-- 预览弹窗 -->
     <el-dialog :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt="">
@@ -48,7 +51,9 @@ export default {
       filelist: [], // 图片地址
       dialogVisible: false, // 预览弹窗
       dialogImageUrl: '', // 预览图片路径
-      currentUid: ''// 上传腾讯云的图片id
+      currentUid: '', // 上传腾讯云的图片id
+      percentage: 0, // 进度条百分比显示
+      isShowProgress: false
     }
   },
 
@@ -69,15 +74,23 @@ export default {
       cos.putObject({
         Bucket: 'hrsaas-hz-1307760745', /* 必须存储桶的名字 */
         Region: 'ap-shanghai', /* 存储桶所在地域，必须字段 */
-        Key: 'data.file.name', /* 必须 文件名字，自己取 */
+        Key: data.file.name, /* 必须 文件名字，自己取 */
         StorageClass: 'STANDARD',
         Body: data.file, // 上传文件对象
-        onProgress: function(progressData) {
+        onProgress: progressData => {
           console.log(JSON.stringify(progressData))
+          // 进度条的百分比进度显示
+          this.percentage = progressData.percent * 100
         }
       }, (err, data) => {
         console.log(err || data)
-        // 判断请求是否成功
+        // 判断请求失败
+        if (err) {
+          this.$message.error('上传失败，请重新上传')
+          this.isShowProgress = false
+          this.filelist = this.filelist.filter(item => item.uid !== this.currentUid)
+        }
+        // 判断请求成功
         if (!err && data.statusCode === 200) {
           // 保存腾讯云的图片地址
           const url = 'https://' + data.Location
@@ -86,7 +99,14 @@ export default {
             return item.uid === this.currentUid
           })
           // 将我们原本的本地地址替换成腾讯云地址
+          console.log()
           this.filelist[index].url = url
+          this.$emit('onSuccess', this.filelist, url)
+
+          // 上传成功之后隐藏进度条
+          setTimeout(() => {
+            this.isShowProgress = false
+          }, 500)
         }
       })
     },
@@ -117,6 +137,8 @@ export default {
       }
       // 保存上传腾讯云的图片id
       this.currentUid = file.uid
+      // 显示进度条
+      this.isShowProgress = true
       return true
     }
   }
