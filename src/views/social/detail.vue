@@ -213,8 +213,8 @@
 </template>
 
 <script>
-import { getCityList } from '@/api/common'
-import { saveContent, getContent, getPaymentItemList } from '@/api/social'
+import { getCityList } from '@/api/common.js'
+import { saveContent, getContent, getPaymentItemList } from '@/api/social.js'
 
 export default {
   name: 'DetailSocial',

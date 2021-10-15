@@ -117,7 +117,7 @@
 </template>
 
 <script>
-import { getDepartments } from '@/api/departments'
+import { getDepartment } from '@/api/departments'
 import {
   getArchivingList,
   getArchivingCont
@@ -174,7 +174,7 @@ export default {
     const { preDates, preYear } = this.getMonth()
     this.yearVal = preDates
     this.requestParameters.year = preYear
-    this.getDepartments()
+    this.getDepartment()
   },
   methods: {
     getMonth: function() {
@@ -212,8 +212,8 @@ export default {
       this.loading = false
     },
     // 部门
-    async  getDepartments() {
-      const { depts } = await getDepartments()
+    async  getDepartment() {
+      const { depts } = await getDepartment()
       this.departmentData = depts
       this.requestParameters.departmentId = depts[0].id
       this.getArchivingList(this.requestParameters)

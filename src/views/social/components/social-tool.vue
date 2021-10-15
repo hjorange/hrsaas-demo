@@ -23,7 +23,7 @@
 
 <script>
 import { getCityList } from '@/api/common'
-import { getDepartments } from '@/api/departments'
+import { getDepartment } from '@/api/departments'
 
 export default {
   name: 'SocialTool',
@@ -40,7 +40,7 @@ export default {
   },
   created: function() {
     this.getCityList()
-    this.getDepartments()
+    this.getDepartment()
   },
   methods: {
     // 获取城市
@@ -48,8 +48,8 @@ export default {
       this.cityList = await getCityList()
     },
     // 获取组织架构
-    async getDepartments() {
-      const { depts } = await getDepartments()
+    async getDepartment() {
+      const { depts } = await getDepartment()
       this.departmentList = depts
     },
     checkChange() {

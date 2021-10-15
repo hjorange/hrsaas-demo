@@ -40,10 +40,12 @@ Object.keys(filters).forEach(item => {
 import Print from 'vue-print-nb'
 // 提供v-print指令，绑定的值就是需要打印的区域
 Vue.use(Print)
-
+import i18n from '@/i18n'
+// 通过 `i18n` 选项创建 Vue 实例
 new Vue({
   el: '#app',
   router,
   store,
+  i18n,
   render: h => h(App)
 })

@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { getSocialList, getSettings } from '@/api/social'
+import { getSocialList, getSettings } from '@/api/social.js'
 import SocialTool from './components/social-tool'
 
 export default {

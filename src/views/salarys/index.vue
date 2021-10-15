@@ -110,7 +110,7 @@
 <script>
 import { getSalarysList, getTips, getSalaryDetail, getCompanySetting } from '@/api/salarys'
 import EmployeeData from '@/api/constant/employees'
-import { getDepartments } from '@/api/departments'
+import { getDepartment } from '@/api/departments'
 import ChangeSalary from './components/change-salary'
 import FixedSalary from './components/fixed-salary'
 export default {
@@ -154,7 +154,7 @@ export default {
   },
   created() {
     this.getSalarysList() // 获取工资
-    this.getDepartments() // 获取组织
+    this.getDepartment() // 获取组织
   },
   methods: {
     // 对聘用形式进行文本显示
@@ -172,8 +172,8 @@ export default {
       this.loading = false
     },
     // 获取组织列表
-    async  getDepartments() {
-      const { depts } = await getDepartments()
+    async  getDepartment() {
+      const { depts } = await getDepartment()
       this.departments = depts
     },
     async getTips() {

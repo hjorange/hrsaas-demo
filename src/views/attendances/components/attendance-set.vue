@@ -391,7 +391,7 @@
 <script>
 import { addEmployee } from '@/api/employees'
 import { getInteger, getIntegerPoint } from '@/filters'
-import { getDepartments } from '@/api/departments'
+import { getDepartment } from '@/api/departments'
 import {
   attendanceSave,
   getAttendance,
@@ -476,14 +476,14 @@ export default {
   },
   // 创建完毕状态
   created() {
-    this.getDepartments() // 获取部门数据
+    this.getDepartment() // 获取部门数据
     this.stateData = attendanceApi
   },
   methods: {
     // 业务方法
     // 获取部门
-    async getDepartments() {
-      const { depts } = await getDepartments()
+    async getDepartment() {
+      const { depts } = await getDepartment()
       this.departmentData = depts
       this.formBase.departmentId = this.leaveBase.departmentId = this.deductionsBase.departmentId = this.overtimeBase.departmentId = this.departmentData[0].id
       this.handleChange(this.leaveBase.departmentId)

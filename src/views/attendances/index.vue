@@ -153,7 +153,7 @@
 import attendanceApi from '@/api/constant/attendance'
 import { getAttendancesList, updateAttendance } from '@/api/attendances'
 import AttendanceSet from './components/attendance-set'
-import { getDepartments } from '@/api/departments'
+import { getDepartment } from '@/api/departments'
 export default {
   name: 'Attendances',
   components: { AttendanceSet },
@@ -201,7 +201,7 @@ export default {
   // 创建完毕状态
   created() {
     this.getAttendancesList() // 获取考勤列表
-    this.getDepartments() // 获取考勤列表
+    this.getDepartment() // 获取考勤列表
   },
   methods: {
     // 暂时不处理
@@ -221,8 +221,8 @@ export default {
       this.$refs.set.dialogFormH()
     },
     // 获取组织列表
-    async getDepartments() {
-      const { depts } = await getDepartments()
+    async getDepartment() {
+      const { depts } = await getDepartment()
       this.departments = depts
     },
 

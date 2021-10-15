@@ -138,7 +138,7 @@
 </template>
 
 <script>
-import { getArchivingList, getArchivingCont } from '@/api/social'
+import { getArchivingList, getArchivingCont } from '@/api/social.js'
 export default {
   name: 'HistoricalArchiving',
   data() {
