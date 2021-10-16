@@ -5,7 +5,7 @@
       <div>
         <div class="fl headL">
           <div class="headImg">
-            <img v-imgError :src="UserInfo.staffPhoto">
+            <img v-imgError="require('../../assets/common/bigUserHeader.png')" :src="UserInfo.staffPhoto">
           </div>
           <div class="headInfoTip">
             <p class="firstChild">早安，{{ UserInfo.username }}，祝你开心每一天！</p>

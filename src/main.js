@@ -4,7 +4,6 @@ import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-// import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 
 import '@/styles/index.scss' // global css
 
@@ -22,10 +21,10 @@ import HrsaasUI from '@/components'
 // 注册全局的复用组件
 Vue.use(HrsaasUI)
 
-// set ElementUI lang to EN
-// Vue.use(ElementUI, { locale })
-// 如果想要中文版 element-ui，按如下方式声明
-Vue.use(ElementUI)
+// 国际化语言，切换，ElementUI里面的
+Vue.use(ElementUI, {
+  i18n: (key, value) => i18n.t(key, value)
+})
 
 Vue.config.productionTip = false
 
@@ -40,6 +39,7 @@ Object.keys(filters).forEach(item => {
 import Print from 'vue-print-nb'
 // 提供v-print指令，绑定的值就是需要打印的区域
 Vue.use(Print)
+// 国际化语言，切换，自己定义的
 import i18n from '@/i18n'
 // 通过 `i18n` 选项创建 Vue 实例
 new Vue({

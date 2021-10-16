@@ -1,4 +1,5 @@
 <template>
+  <!-- 全屏组件 -->
   <div style="margin:2px 10px 0 ">
     <svg-icon icon-class="fullscreen" style="color:#fff; width: 20px; height: 20px" @click="onClick" />
   </div>

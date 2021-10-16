@@ -5,6 +5,7 @@ export default {
   name: 'settings',
   children: [
     {
+      name: 'settings',
       path: '', // 默认子路由
       component: () => import('@/views/setting'),
       // 存储路由信息

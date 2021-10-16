@@ -12,7 +12,7 @@
     <breadcrumb class="breadcrumb-container" /> -->
 
     <div class="right-menu">
-      <span><ScreenFull /></span>
+      <SelectLang /> <ScreenFull />
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <!-- 定义自定义事件 v-imgError-->

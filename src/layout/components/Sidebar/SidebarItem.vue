@@ -3,7 +3,11 @@
     <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
-          <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="onlyOneChild.meta.title" />
+          <!--动态生成侧边栏切换中英文，route的key是路由里面的name,item是路由的每一项，所以item.nama就相当于route的key  -->
+          <item
+            :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)"
+            :title="$t('route.'+item.name)"
+          />
         </el-menu-item>
       </app-link>
     </template>

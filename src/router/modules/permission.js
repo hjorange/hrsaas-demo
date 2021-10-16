@@ -5,6 +5,7 @@ export default {
   name: 'permissions',
   children: [
     {
+      name: 'employees',
       path: '', // 默认子路由
       component: () => import('@/views/permission'),
       // 存储路由信息
